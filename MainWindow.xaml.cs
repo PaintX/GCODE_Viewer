@@ -33,8 +33,8 @@ namespace ExampleBrowser
 
 
         GCODE gcodeParser;
-        [DllImport("kernel32.dll", SetLastError = true)]
-        static extern bool AllocConsole();
+        //[DllImport("kernel32.dll", SetLastError = true)]
+        //static extern bool AllocConsole();
 
         OpenFileDialog openFileDialog1 = new OpenFileDialog();
         List<LinesVisual3D> moves;
@@ -44,7 +44,7 @@ namespace ExampleBrowser
         {
             InitializeComponent();
 
-            AllocConsole();
+           // AllocConsole();
         }
 
         private void _load_file(String file)
@@ -81,7 +81,7 @@ namespace ExampleBrowser
             {
                 gcodeParser = new GCODE(file);
 
-                moves = gcodeParser.build_3D_Model();
+                moves = gcodeParser.build_3D_Model(0);
             }
 
             foreach (LinesVisual3D m in moves)
@@ -91,6 +91,26 @@ namespace ExampleBrowser
             }
             viewport.CameraController.AddRotateForce(0.001, 0.001); // emulate move camera 
         }
+
+        private void lineSelected(object sender, SelectionChangedEventArgs e)
+        {
+            ListBox lb = (ListBox)sender;
+
+            if (openFileDialog1.FileName.EndsWith(".nc"))
+            {
+                moves = gcodeParser.build_3D_Model(lb.SelectedIndex);
+            }
+
+            foreach (LinesVisual3D m in moves)
+            {
+                viewport.Children.Remove(m);
+                viewport.Children.Add(m);
+            } 
+            
+            viewport.CameraController.AddRotateForce(0.001, 0.001); // emulate move camera 
+        }
+
+
 
         private void Menu_Open_Click(object sender, RoutedEventArgs e)
         {        
@@ -107,6 +127,13 @@ namespace ExampleBrowser
 
         private void Menu_Quit_Click(object sender, RoutedEventArgs e)
         {
+            Application.Current.Shutdown();
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
+
             Application.Current.Shutdown();
         }
     }

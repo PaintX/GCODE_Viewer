@@ -138,7 +138,9 @@ namespace ExampleBrowser
         LinesVisual3D normalmoves = new LinesVisual3D();
         LinesVisual3D rapidmoves = new LinesVisual3D();
 
-        public List<LinesVisual3D> build_3D_Model()
+        LinesVisual3D Toolmoves = new LinesVisual3D();
+
+        public List<LinesVisual3D> build_3D_Model(int lineMax)
         {
             Primitive p = new Primitive();
             moves.Clear();
@@ -148,6 +150,7 @@ namespace ExampleBrowser
 
             normalmoves.Points.Clear();
             rapidmoves.Points.Clear();
+            Toolmoves.Points.Clear();
 
             // translate gcode to 3d
             gcodeMaxMinData maxdata = new gcodeMaxMinData();
@@ -203,11 +206,18 @@ namespace ExampleBrowser
                 if (positionCommand == "G0")
                 {
                     // Draw rapidmove as blue line
-                    p.DrawLine(rapidmoves, x_pos_old, y_pos_old, z_pos_old, x_pos, y_pos, z_pos);
+                    if (positions.linenumber < lineMax)
+                        p.DrawLine(Toolmoves, x_pos_old, y_pos_old, z_pos_old, x_pos, y_pos, z_pos);
+                    else
+                        p.DrawLine(rapidmoves, x_pos_old, y_pos_old, z_pos_old, x_pos, y_pos, z_pos);         
                 }
                 if (positionCommand == "G1")
                 {
-                    p.DrawLine(normalmoves, x_pos_old, y_pos_old, z_pos_old, x_pos, y_pos, z_pos);
+                    if (positions.linenumber < lineMax)
+                        p.DrawLine(Toolmoves, x_pos_old, y_pos_old, z_pos_old, x_pos, y_pos, z_pos);
+                    else
+                        p.DrawLine(normalmoves, x_pos_old, y_pos_old, z_pos_old, x_pos, y_pos, z_pos);
+                    
                 }
                 if (positionCommand == "G2" || positionCommand == "G3") // G2 or G3 > draw an arc
                 {
@@ -216,6 +226,9 @@ namespace ExampleBrowser
                         clockwise = true;
 
                     p.DrawArc(normalmoves,x_pos_old, y_pos_old, z_pos_old, x_pos, y_pos, z_pos, j_pos, i_pos, false, clockwise);
+
+                    if (positions.linenumber < lineMax)
+                        p.DrawLine(Toolmoves, x_pos_old, y_pos_old, z_pos_old, x_pos, y_pos, z_pos);
                 }
                 
                 if (positions.x_pos.HasValue == true)
@@ -230,10 +243,12 @@ namespace ExampleBrowser
             rapidmoves.Color = Colors.Blue;
             normalmoves.Thickness = 1;
             normalmoves.Color = Colors.Black;
+            Toolmoves.Thickness = 1;
+            Toolmoves.Color = Colors.Red;
 
             moves.Add(rapidmoves);
             moves.Add(normalmoves);
-
+            moves.Add(Toolmoves);
             return moves;
         }
     }

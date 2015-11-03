@@ -64,7 +64,8 @@
                   VerticalAlignment="Stretch" 
                   Grid.Column="1" ResizeBehavior="PreviousAndNext"
                   Width="5" Background="#FFBCBCBC"/>
-            <ListBox Grid.Column="2" Name="fileText" HorizontalContentAlignment="Stretch" Margin="10">
+
+            <ListBox Grid.Column="2" Name="fileText" HorizontalContentAlignment="Stretch" Margin="10" SelectionChanged="lineSelected">
               
             </ListBox>
 
