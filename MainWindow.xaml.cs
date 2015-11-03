@@ -33,18 +33,16 @@ namespace ExampleBrowser
 
 
         GCODE gcodeParser;
-        //[DllImport("kernel32.dll", SetLastError = true)]
-        //static extern bool AllocConsole();
+        [DllImport("kernel32.dll", SetLastError = true)]
+        static extern bool AllocConsole();
 
         OpenFileDialog openFileDialog1 = new OpenFileDialog();
         List<LinesVisual3D> moves;
 
-
         public MainWindow()
         {
             InitializeComponent();
-
-           // AllocConsole();
+            AllocConsole();
         }
 
         private void _load_file(String file)
@@ -76,7 +74,7 @@ namespace ExampleBrowser
                 i++;
             }
             myFile.Close();
-
+            
             if (file.EndsWith(".nc"))
             {
                 gcodeParser = new GCODE(file);
@@ -89,7 +87,8 @@ namespace ExampleBrowser
                 viewport.Children.Remove(m);
                 viewport.Children.Add(m);
             }
-            viewport.CameraController.AddRotateForce(0.001, 0.001); // emulate move camera 
+
+            //viewport.CameraController.AddRotateForce(0.000000000000001, 0.000000000000001); // emulate move camera 
         }
 
         private void lineSelected(object sender, SelectionChangedEventArgs e)
@@ -105,9 +104,10 @@ namespace ExampleBrowser
             {
                 viewport.Children.Remove(m);
                 viewport.Children.Add(m);
-            } 
-            
-            viewport.CameraController.AddRotateForce(0.001, 0.001); // emulate move camera 
+            }
+
+            Thread.Sleep(1);
+            //viewport.CameraController.AddRotateForce(0.000000000000001, 0.000000000000001); // emulate move camera 
         }
 
 

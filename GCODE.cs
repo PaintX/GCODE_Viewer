@@ -134,7 +134,7 @@ namespace ExampleBrowser
             return gcodeS;
         }
 
-        List<LinesVisual3D> moves = new List<LinesVisual3D>();
+List<LinesVisual3D> moves = new List<LinesVisual3D>();
         LinesVisual3D normalmoves = new LinesVisual3D();
         LinesVisual3D rapidmoves = new LinesVisual3D();
 
@@ -142,7 +142,7 @@ namespace ExampleBrowser
 
         public List<LinesVisual3D> build_3D_Model(int lineMax)
         {
-            Primitive p = new Primitive();
+            Primitive p = new Primitive();        
             moves.Clear();
 
             if (gcodeListCommands.Count <= 0)

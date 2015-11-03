@@ -17,7 +17,7 @@ using HelixToolkit.Wpf;
 
 namespace ExampleBrowser
 {
-    class Primitive : MainWindow
+    class Primitive
     {
         public void DrawLine(LinesVisual3D lines, double x_start, double y_start, double z_start, double x_stop, double y_stop, double z_stop)
         {
